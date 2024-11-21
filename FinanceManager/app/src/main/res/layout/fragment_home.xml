@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".Activities.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="260dp"
-                android:background="@drawable/design_top_home_fragment"
+        android:background="@drawable/design_top_home_fragment"
         android:orientation="vertical">
 
         <LinearLayout
