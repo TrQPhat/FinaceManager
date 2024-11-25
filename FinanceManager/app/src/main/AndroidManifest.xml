@@ -13,14 +13,20 @@
         android:theme="@style/Theme.FinanceManager"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.EditCagetoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.CagetoryManagementActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Query"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activities.NavigationViewActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.test"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".Activities.SignUpActivity"
             android:exported="false" />

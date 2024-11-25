@@ -3,6 +3,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.security.AccessControlContext;
+
 public class DBHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "QuanLyChiTieu.db";
@@ -22,6 +24,7 @@ public class DBHelper extends SQLiteOpenHelper{
     private static final String COLUMN_CATEGORY_NAME = "name";
     private static final String COLUMN_CATEGORY_TYPE = "type";
     private static final String COLUMN_USER_ID_FK = "user_id";
+    private static final String COLUMN_ICON_PATH = "icon_path";
 
     // Bảng Transactions
     private static final String TABLE_TRANSACTIONS = "Transactions";

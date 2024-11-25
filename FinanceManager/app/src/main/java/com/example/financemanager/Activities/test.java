@@ -24,6 +24,7 @@ public class test extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        //DBConfigUtil.deleteDatabase(this);
         DBConfigUtil.copyDatabaseFromAssets(this);
         // Liên kết với các view
         EditText emailInput = findViewById(R.id.emailInput);
@@ -47,6 +48,7 @@ public class test extends AppCompatActivity {
                 String password = etPassword.getText().toString().trim();
                 if (email.isEmpty() && password.isEmpty()) {
                     Toast.makeText(test.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    return;
                 } else {
                     UserDAO userDAO = new UserDAO(test.this);
                     User user = userDAO.getUserByEmail(email);

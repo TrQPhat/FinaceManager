@@ -9,16 +9,16 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private Date create_at;
-    private Date last_login;
+    private String create_at;
+    private String last_login;
 
     public User(String username, String email, String password) {
         this.id = 0;
         this.username = username;
         this.email = email;
         this.password = password;
-        this.create_at = new Date();
-        this.last_login = new Date();
+        this.create_at = FormatDate.DateToString(new Date());
+        this.last_login = FormatDate.DateToString(new Date());
     }
 
     public User(int id, String username, String email, String password, String create_at, String last_login) {
@@ -26,8 +26,8 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.create_at = FormatDate.parseDate(create_at);
-        this.last_login = FormatDate.parseDate(last_login);
+        this.create_at = create_at;
+        this.last_login = last_login;
     }
 
     public int getId() {
@@ -63,18 +63,18 @@ public class User {
     }
 
     public String getCreate_at() {
-        return FormatDate.format(create_at);
+        return create_at;
     }
 
     public void setCreate_at() {
-        this.create_at = new Date();
+        this.create_at = FormatDate.DateToString(new Date());
     }
 
     public String getLast_login() {
-        return FormatDate.format(last_login);
+        return last_login;
     }
 
     public void updateLast_login() {
-        this.last_login = new Date();
+        this.last_login = FormatDate.DateToString(new Date());
     }
 }

@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDatabase() {
+        //DBConfigUtil.deleteDatabase(this);
         DBConfigUtil.copyDatabaseFromAssets(this);
     }
 

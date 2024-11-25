@@ -78,18 +78,18 @@ public class Query extends AppCompatActivity {
         List<User> users = userDAO.getAllUsers();
         List<String> userStrings = new ArrayList<>();
         for (User user : users) {
-            userStrings.add("ID: " + user.getId() + ", Username: " + user.getUsername());
+            userStrings.add("ID: " + user.getId() + ", Username: " + user.getUsername() + ", Email: " + user.getEmail());
         }
         displayData(userStrings);
     }
 
     private void showCategories() {
-        List<Category> categories = categoryDAO.getAllCategories();
-        List<String> categoryStrings = new ArrayList<>();
-        for (Category category : categories) {
-            categoryStrings.add("ID: " + category.getCategoryId() + ", Name: " + category.getName());
-        }
-        displayData(categoryStrings);
+//        List<Category> categories = categoryDAO.getAllCategories(int userId, String type);
+//        List<String> categoryStrings = new ArrayList<>();
+//        for (Category category : categories) {
+//            categoryStrings.add("ID: " + category.getCategoryId() + ", Name: " + category.getName());
+//        }
+//        displayData(categoryStrings);
     }
 
     private void showTransactions() {

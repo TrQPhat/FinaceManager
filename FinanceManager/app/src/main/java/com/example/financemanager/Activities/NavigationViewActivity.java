@@ -11,6 +11,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import com.example.financemanager.DAO.UserDAO;
+import com.example.financemanager.Model.User;
 import com.example.financemanager.R;
 import com.example.financemanager.Utils.FragmentUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,6 +21,7 @@ public class NavigationViewActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     String email;
+    User user;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,10 +89,16 @@ public class NavigationViewActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.frame_layout , new HomeFragment());
         email = getIntent().getStringExtra("email");
+        UserDAO userDAO = new UserDAO(this);
+        user = userDAO.getUserByEmail(email);
+    }
 
+    public int getUser_Id() {
+        return user.getId();
     }
 
     public String getEmail() {
         return email;
     }
+
 }
