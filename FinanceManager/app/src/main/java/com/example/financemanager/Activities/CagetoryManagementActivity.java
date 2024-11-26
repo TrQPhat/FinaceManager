@@ -5,7 +5,6 @@ import static android.app.PendingIntent.getActivity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -22,7 +21,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.financemanager.Adapter.CagetoryAdapter;
 import com.example.financemanager.DAO.CategoryDAO;
-import com.example.financemanager.DAO.DBHelper;
 import com.example.financemanager.Model.Category;
 import com.example.financemanager.R;
 
@@ -36,6 +34,7 @@ public class CagetoryManagementActivity extends AppCompatActivity {
     List<Category> list;
     CagetoryAdapter adapter;
     private int user_id;
+    private boolean isLongClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +69,8 @@ public class CagetoryManagementActivity extends AppCompatActivity {
         adapter = new CagetoryAdapter(this, R.layout.item_cagetory, list);
         listView.setAdapter(adapter);
 
+        isLongClick = false;
+
     }
 
     private void addEvents(){
@@ -93,19 +94,23 @@ public class CagetoryManagementActivity extends AppCompatActivity {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                new AlertDialog.Builder(CagetoryManagementActivity.this)
+                isLongClick = true;
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(CagetoryManagementActivity.this);
+                alertDialog.setCancelable(false);
+                alertDialog
                         .setTitle("Xóa danh mục")
                         .setMessage("Bạn có chắc chắn muốn xóa danh mục này?")
                         .setPositiveButton("Có", (dialog, which) -> {
                             int category_id = list.get(position).getCategoryId();
                             CategoryDAO categoryDAO = new CategoryDAO(CagetoryManagementActivity.this);
                             if (categoryDAO.deleteCategory(category_id)){
-                                list.remove(position);
+                                list.remove(list.get(position));
                                 adapter.notifyDataSetChanged();
                                 Toast.makeText(CagetoryManagementActivity.this, "Xóa danh mục thành công !!", Toast.LENGTH_SHORT).show();
                             }
+                            isLongClick = false;
                         })
-                        .setNegativeButton("Không", null)
+                        .setNegativeButton("Không", (dialog, which) -> {isLongClick = false;})
                         .show();
 
                 return false;
@@ -115,10 +120,12 @@ public class CagetoryManagementActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(CagetoryManagementActivity.this, EditCagetoryActivity.class);
-                intent.putExtra("user_id", user_id);
-                intent.putExtra("category", list.get(position));
-                startActivityForResult(intent,123);
+                if (!isLongClick){
+                    Intent intent = new Intent(CagetoryManagementActivity.this, EditCagetoryActivity.class);
+                    intent.putExtra("user_id", user_id);
+                    intent.putExtra("category", list.get(position));
+                    startActivityForResult(intent,321);
+                }
             }
         });
     }
@@ -128,12 +135,17 @@ public class CagetoryManagementActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             Category category = (Category) data.getSerializableExtra("change");
-            if (resultCode == 123){
+            if (requestCode == 123){
                 list.add(category);
-                adapter.notifyDataSetChanged();
             }else {
-                //sửa
+                for (int i=0; i<list.size(); i++) {
+                    if (list.get(i).getCategoryId() == category.getCategoryId()) {
+                        list.set(i, category);
+                        break;
+                    }
+                }
             }
+            adapter.notifyDataSetChanged();
         }
     }
 }

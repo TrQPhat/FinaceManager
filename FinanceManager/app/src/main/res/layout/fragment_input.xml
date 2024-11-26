@@ -24,7 +24,7 @@
             android:padding="7dp">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnIncome"
+                android:id="@+id/btnExpense"
                 style="@android:style/Widget.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -37,7 +37,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnOutcome"
+                android:id="@+id/btnIncome"
                 style="@android:style/Widget.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -242,10 +242,16 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.78" >
 
+            <GridView
+                android:id="@+id/gridView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numColumns="3"/>
+
         </FrameLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnSaveTransaction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="70dp"

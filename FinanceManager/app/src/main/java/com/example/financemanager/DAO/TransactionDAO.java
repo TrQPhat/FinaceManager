@@ -18,24 +18,31 @@ public class TransactionDAO {
     }
 
     // Thêm giao dịch mới
-    public long addTransaction(double amount, String date, String description, int categoryId, int userId) {
+    public boolean insertTransaction(Transaction transaction) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("amount", amount);
-        values.put("date", date);
-        values.put("description", description);
-        values.put("category_id", categoryId);
-        values.put("user_id", userId);
+        values.put("amount", transaction.getAmount());
+        values.put("date", transaction.getDate());
+        values.put("description", transaction.getDescription());
+        values.put("category_id", transaction.getCategoryId());
+        values.put("user_id", transaction.getUserId());
 
-        long id = db.insert("Transactions", null, values);
-        db.close();
-        return id;
+        return db.insert("Transactions", null, values) != -1;
     }
 
-    // Lấy tất cả giao dịch của một người dùng
-    public Cursor getTransactionsByUser(int userId) {
+    public boolean getAllTransactionsById(int id) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        return db.query("Transactions", null, "user_id = ?", new String[]{String.valueOf(userId)}, null, null, null);
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT * FROM Transactions WHERE transaction_id = ?", new String[]{String.valueOf(id)});
+            return cursor.getCount() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
+        }
+        return false;
     }
 
     public List<Transaction> getAllTransactions() {

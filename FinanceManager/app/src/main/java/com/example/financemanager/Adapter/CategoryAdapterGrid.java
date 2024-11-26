@@ -7,56 +7,44 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.financemanager.Model.Icon;
+import com.example.financemanager.Model.Category;
 import com.example.financemanager.R;
 
 import java.util.List;
 
-public class IconAdapter extends ArrayAdapter<Icon> {
-
+public class CategoryAdapterGrid extends ArrayAdapter<Category> {
     Context context;
-    List<Icon> list;
     int layout;
-    private int selectedIconId = -1;
+    List<Category> list;
 
-    @Nullable
-    @Override
-    public Icon getItem(int position) {
-        return super.getItem(position);
-    }
-
-    public IconAdapter(@NonNull Context context, int resource, @NonNull List<Icon> objects) {
-        super(context, resource, objects);
-        this.context=context;
-        this.layout = resource;
-        this.list = objects;
-    }
-
-    public void setSelectedIconId(int iconId) {
-        this.selectedIconId = iconId;
-        notifyDataSetChanged(); // Cập nhật lại GridView
+    public CategoryAdapterGrid(@NonNull Context context, int layout, @NonNull List<Category> list) {
+        super(context, layout, list);
+        this.context = context;
+        this.layout = layout;
+        this.list = list;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-
         if (convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout,null);
         }
-
-        Icon icon = list.get(position);
+        Category category = list.get(position);
 
         ImageView imageView = convertView.findViewById(R.id.imageView);
-        imageView.setImageResource(context.getResources().getIdentifier(icon.getPath(), "drawable", context.getPackageName()));
-
+        imageView.setImageResource(context.getResources().getIdentifier(category.getIconPath(), "drawable", context.getPackageName()));
+        TextView tvName = convertView.findViewById(R.id.tvName);
+        String name = category.getName();
+        if (name.length() > 14)
+            name = name.substring(0, 11) + "...";
+        tvName.setText(name);
 
         return convertView;
     }
 }
-

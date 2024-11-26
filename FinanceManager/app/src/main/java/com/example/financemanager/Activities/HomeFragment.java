@@ -89,8 +89,8 @@ public class HomeFragment extends Fragment {
         tvName.setText(user.getUsername());
         tvBalance = view.findViewById(R.id.tvBalance);
         //set số dư
-        btnIncome = view.findViewById(R.id.btnIncome);
-        btnOutcome = view.findViewById(R.id.btnOutcome);
+        btnIncome = view.findViewById(R.id.btnExpense);
+        btnOutcome = view.findViewById(R.id.btnIncome);
         load_IncomeFragment();
     }
 

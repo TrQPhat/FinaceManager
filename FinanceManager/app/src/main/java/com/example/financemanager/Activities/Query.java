@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,6 +35,7 @@ public class Query extends AppCompatActivity {
     private TransactionDAO transactionDAO;
     private BudgetDAO budgetDAO;
     private NotificationDAO notificationDAO;
+    EditText etUserId;
     Button btnSearch;
     int userId;
 
@@ -58,8 +60,8 @@ public class Query extends AppCompatActivity {
             }
         });
 
-        EditText etUserId = findViewById(R.id.etUserId);
-        userId = Integer.parseInt(etUserId.getText().toString());
+        etUserId = findViewById(R.id.etUserId);
+
 
         // Initialize ListView
         listViewData = findViewById(R.id.listViewData);
@@ -89,6 +91,11 @@ public class Query extends AppCompatActivity {
     }
 
     private void showCategories() {
+        if (etUserId.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập userId", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        userId = Integer.parseInt(etUserId.getText().toString());
         List<Category> categories = categoryDAO.getAllCategories(userId);
         List<String> categoryStrings = new ArrayList<>();
         for (Category category : categories) {

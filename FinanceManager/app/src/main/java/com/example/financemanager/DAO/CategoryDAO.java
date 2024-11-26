@@ -18,7 +18,7 @@ public class CategoryDAO {
     }
 
     // Thêm danh mục mới
-    public boolean addCategory(Category category) {
+    public boolean insertCategory(Category category) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("name", category.getName());
@@ -32,6 +32,17 @@ public class CategoryDAO {
     public boolean deleteCategory(int categoryId) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete("Categories", "category_id = ?", new String[]{String.valueOf(categoryId)}) > 0;
+    }
+
+    public boolean updateCategory(Category category){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("name", category.getName());
+        values.put("type", category.getType());
+        values.put("user_id", category.getUserId());
+        values.put("icon_id", category.getIconId());
+        return db.update("Categories", values, "category_id = ?", new String[]{String.valueOf(category.getCategoryId())}) > 0;
     }
 
 
@@ -50,7 +61,7 @@ public class CategoryDAO {
                     // Tạo đối tượng Category từ dữ liệu truy vấn
                     Category category = new Category(
                             cursor.getInt(cursor.getColumnIndexOrThrow("Categories.category_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("Categories.name")),
+                            cursor.getString(1),
                             cursor.getString(cursor.getColumnIndexOrThrow("Categories.type")),
                             cursor.getInt(cursor.getColumnIndexOrThrow("Categories.user_id")),
                             cursor.getInt(cursor.getColumnIndexOrThrow("Icon.icon_id")),
@@ -83,7 +94,7 @@ public class CategoryDAO {
                     // Tạo đối tượng Category từ dữ liệu truy vấn
                     Category category = new Category(
                             cursor.getInt(cursor.getColumnIndexOrThrow("Categories.category_id")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("Categories.name")),
+                            cursor.getString(1),
                             cursor.getString(cursor.getColumnIndexOrThrow("Categories.type")),
                             cursor.getInt(cursor.getColumnIndexOrThrow("Categories.user_id")),
                             cursor.getInt(cursor.getColumnIndexOrThrow("Icon.icon_id")),
@@ -101,5 +112,19 @@ public class CategoryDAO {
         return categoryList;
     }
 
+    public boolean checkCategoryExists(int userId, String name) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            String query = "SELECT * FROM Categories WHERE user_id = ? AND name = ?";
+            cursor = db.rawQuery(query, new String[]{String.valueOf(userId), name});
+            return cursor.getCount() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        return false;
+    }
 
 }

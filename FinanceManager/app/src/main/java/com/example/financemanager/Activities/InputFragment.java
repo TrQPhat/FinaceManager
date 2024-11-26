@@ -7,19 +7,23 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.financemanager.Adapter.IconAdapter;
-import com.example.financemanager.DAO.IconDAO;
+import com.example.financemanager.Adapter.CategoryAdapterGrid;
+import com.example.financemanager.DAO.CategoryDAO;
+import com.example.financemanager.DAO.TransactionDAO;
 import com.example.financemanager.Dialogs.Calendar_Dialog;
-import com.example.financemanager.Model.Icon;
+import com.example.financemanager.Model.Category;
+import com.example.financemanager.Model.Transaction;
 import com.example.financemanager.R;
 import com.example.financemanager.Utils.FormatDate;
 
@@ -34,14 +38,18 @@ public class InputFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView btnIncome, btnOutcome, tvDate;
+    TextView btnIncome, btnExpense, tvDate;
     EditText etDescription, etAmount;
     ImageView btnAddCagetory, btnPreviousDay, btnNextDay, btnCalendar;
-    List<Icon> list;
-    private RecyclerView recyclerView;
-    private IconAdapter iconAdapter;
-    private IconDAO iconDAO;
+    GridView gridView;
+    Button btnSave;
+
+    private CategoryAdapterGrid adapter;
+    private List<Category> list;
+    private CategoryDAO categoryDAO;
+    private Category selectedCategory;
     private  int user_Id;
+    private String type;
 
     public InputFragment() {
         // Required empty public constructor
@@ -61,7 +69,7 @@ public class InputFragment extends Fragment {
         NavigationViewActivity activity = (NavigationViewActivity) getActivity();
         user_Id = activity.getUser_Id();
         btnIncome = view.findViewById(R.id.btnIncome);
-        btnOutcome = view.findViewById(R.id.btnOutcome);
+        btnExpense = view.findViewById(R.id.btnExpense);
         tvDate = view.findViewById(R.id.tvDate);
         btnPreviousDay = view.findViewById(R.id.btnPreviousDay);
         btnNextDay = view.findViewById(R.id.btnNextDay);
@@ -69,6 +77,17 @@ public class InputFragment extends Fragment {
         etAmount = view.findViewById(R.id.etAmount);
         btnAddCagetory = view.findViewById(R.id.btnAddCagetory);
         btnCalendar = view.findViewById(R.id.btnCalendar);
+        btnSave = view.findViewById(R.id.btnSaveTransaction);
+        tvDate.setText(FormatDate.DateToString(new Date()));
+        type = "Chi tiêu";
+
+        gridView = view.findViewById(R.id.gridView);
+        categoryDAO = new CategoryDAO(view.getContext());
+        list = categoryDAO.getAllCategoriesByType(user_Id, type);
+        adapter = new CategoryAdapterGrid(view.getContext(), R.layout.item_category_grid, list);
+        gridView.setAdapter(adapter);
+
+        selectedCategory = null;
 
     }
 
@@ -76,17 +95,26 @@ public class InputFragment extends Fragment {
         btnIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (type.equals("Thu nhập")) return;
                 btnIncome.setAlpha(1f);
-                btnOutcome.setAlpha(0.3f);
-
+                btnExpense.setAlpha(0.3f);
+                type = "Thu nhập";
+                list = categoryDAO.getAllCategoriesByType(user_Id, type);
+                adapter = new CategoryAdapterGrid(getContext(), R.layout.item_category_grid, list);
+                gridView.setAdapter(adapter);
             }
         });
 
-        btnOutcome.setOnClickListener(new View.OnClickListener() {
+        btnExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (type.equals("Chi tiêu")) return;
                 btnIncome.setAlpha(0.3f);
-                btnOutcome.setAlpha(1f);
+                btnExpense.setAlpha(1f);
+                type = "Chi tiêu";
+                list = categoryDAO.getAllCategoriesByType(user_Id, type);
+                adapter = new CategoryAdapterGrid(getContext(), R.layout.item_category_grid, list);
+                gridView.setAdapter(adapter);
             }
         });
         btnAddCagetory.setOnClickListener(new View.OnClickListener() {
@@ -123,7 +151,34 @@ public class InputFragment extends Fragment {
             }
         });
 
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            selectedCategory = list.get(position);
+            view.setSelected(true);
+        });
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String date = tvDate.getText().toString();
+                String description = etDescription.getText().toString();
+                String amount = etAmount.getText().toString();
+                if (amount.isEmpty()){
+                    Toast.makeText(getContext(), "Vui lòng nhập số tiền (>0)", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (selectedCategory == null){
+                    Toast.makeText(getContext(), "Vui lòng chọn danh mục", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                TransactionDAO transactionDAO = new TransactionDAO(getContext());
+                Transaction transaction = new Transaction(0, Double.parseDouble(amount), date, description, selectedCategory.getCategoryId(), user_Id);
+                if (transactionDAO.insertTransaction(transaction)){
+                    Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -136,8 +191,7 @@ public class InputFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_input, container, false);
     }
@@ -147,5 +201,14 @@ public class InputFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         addControls(view);
         addEvents();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        list = categoryDAO.getAllCategoriesByType(user_Id, type);
+        adapter = new CategoryAdapterGrid(getContext(), R.layout.item_category_grid, list);
+        gridView.setAdapter(adapter);
+
     }
 }

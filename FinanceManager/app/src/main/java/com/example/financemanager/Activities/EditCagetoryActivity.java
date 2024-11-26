@@ -44,6 +44,7 @@ public class EditCagetoryActivity extends AppCompatActivity {
     int user_id;
     Intent intent;
     Icon selectedIcon;
+    Category category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,33 +72,40 @@ public class EditCagetoryActivity extends AppCompatActivity {
         list = iconDAO.getAllIcons();
         adapter = new IconAdapter(this, R.layout.item_icon_grid, list);
         gridView.setAdapter(adapter);
+        selectedIcon = null;
 
+        category = null;
         intent = getIntent();
         user_id = intent.getIntExtra("user_id", 0);
         if (intent.hasExtra("category"))
         {
             typeRequest = true;//kiểu request là edit
             //lấy danh mục
-            Category category = (Category) intent.getSerializableExtra("category");
+            category = (Category) intent.getSerializableExtra("category");
             etName.setText(category.getName());//set tên
 
             //set kiểu
-            for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
-
-                // Kiểm tra nếu tag của RadioButton khớp với giá trị type
-                if (radioButton.getTag() != null && radioButton.getText().equals(category.getType())) {
-                    radioButton.setChecked(true);
-                    break; // Thoát vòng lặp
-                }
-            }
+            if (category.getType().equals("Thu nhập"))
+                radioGroup.check(R.id.rdbtIncome);
+            else radioGroup.check(R.id.rdbtExpense);
 
             //set icon
-            adapter.setSelectedIconId(category.getIconId());
+            gridView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                    for (int i=0; i<gridView.getChildCount(); i++){
+                        if (adapter.getItem(i).getId()== category.getIconId()){
+                            View view = gridView.getChildAt(i);
+                            selectedIcon = adapter.getItem(i);
+                            view.setSelected(true);
+                        }
 
+                    }
+                    gridView.removeOnLayoutChangeListener(this);
+                }
+            });
 
         }
-        selectedIcon = null;
 
     }
 
@@ -112,7 +120,8 @@ public class EditCagetoryActivity extends AppCompatActivity {
 
         gridView.setOnItemClickListener((parent, view, position, id) -> {
             selectedIcon = list.get(position);
-            etName.setText(selectedIcon.getName());
+            if (etName.getText().toString().isEmpty())
+                etName.setText(selectedIcon.getName());
 
             for (int i = 0; i < gridView.getChildCount(); i++) {
                 gridView.getChildAt(i).setSelected(false);
@@ -126,9 +135,15 @@ public class EditCagetoryActivity extends AppCompatActivity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CategoryDAO categoryDAO = new CategoryDAO(EditCagetoryActivity.this);
                 String name = etName.getText().toString();
                 if (!Validate.validateName(name)) {
                     Toast.makeText(EditCagetoryActivity.this, "Tên danh mục trống hoặc không hợp lệ !!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (categoryDAO.checkCategoryExists(user_id, name)){
+                    Toast.makeText(EditCagetoryActivity.this, "Tên danh mục đã tồn tại !!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -147,16 +162,27 @@ public class EditCagetoryActivity extends AppCompatActivity {
                     return;
                 }
 
-                Category category = new Category(0, name, type, user_id, selectedIcon.getId(), selectedIcon.getPath());
-                CategoryDAO categoryDAO = new CategoryDAO(EditCagetoryActivity.this);
-                if (categoryDAO.addCategory(category)){
-                    Toast.makeText(EditCagetoryActivity.this, "Thêm danh mục "+ name +" thành công !!", Toast.LENGTH_SHORT).show();
-                    intent.putExtra("change", category);
-                    setResult(RESULT_OK, intent);
-                    return;
-
+                if (!typeRequest){
+                    category = new Category(0, name, type, user_id, selectedIcon.getId(), selectedIcon.getPath());
+                    if (categoryDAO.insertCategory(category)){
+                        Toast.makeText(EditCagetoryActivity.this, "Thêm danh mục \""+ name +"\" thành công !!", Toast.LENGTH_SHORT).show();
+                    }else
+                        Toast.makeText(EditCagetoryActivity.this, "Thêm danh mục \""+ name +"\" thất bại !!", Toast.LENGTH_SHORT).show();
                 }
-                else Toast.makeText(EditCagetoryActivity.this, "Thêm danh mục "+ name +" thất bại !!", Toast.LENGTH_SHORT).show();
+                else {
+                    category.setName(name);
+                    category.setType(type);
+                    category.setIconId(selectedIcon.getId());
+                    category.setIconPath(selectedIcon.getPath());
+                    if (categoryDAO.updateCategory(category)){
+                        Toast.makeText(EditCagetoryActivity.this, "Sửa danh mục \""+ name +"\" thành công !!", Toast.LENGTH_SHORT).show();
+                    }else
+                        Toast.makeText(EditCagetoryActivity.this, "Sửa danh mục \""+ name +"\" thất bại !!", Toast.LENGTH_SHORT).show();
+                }
+
+                //trả lại cagetory hiện tại
+                intent.putExtra("change", category);
+                setResult(RESULT_OK, intent);
 
             }
         });
