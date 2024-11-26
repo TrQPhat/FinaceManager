@@ -9,6 +9,14 @@
     tools:context=".Activities.Query">
     <!-- Button to show Users -->
 
+    <EditText
+        android:id="@+id/etUserId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:hint="Nhập user id muốn xem" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -21,13 +21,18 @@ public class IconAdapter extends ArrayAdapter<Icon> {
     Context context;
     List<Icon> list;
     int layout;
-
+    private int selectedIconId = -1;
 
     public IconAdapter(@NonNull Context context, int resource, @NonNull List<Icon> objects) {
         super(context, resource, objects);
         this.context=context;
         this.layout = resource;
         this.list = objects;
+    }
+
+    public void setSelectedIconId(int iconId) {
+        this.selectedIconId = iconId;
+        notifyDataSetChanged(); // Cập nhật lại GridView
     }
 
     @NonNull

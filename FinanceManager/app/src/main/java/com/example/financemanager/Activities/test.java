@@ -1,5 +1,6 @@
 package com.example.financemanager.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -38,6 +39,14 @@ public class test extends AppCompatActivity {
         TextView tvLastLogin = findViewById(R.id.tvLastLogin);
         EditText etPassword = findViewById(R.id.etPassword);
         TextView tvKQcheckPassword = findViewById(R.id.tvKQcheckPassword);
+        Button btnDatabase = findViewById(R.id.btnDatabase);
+        btnDatabase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(test.this, Query.class);
+                startActivity(intent);
+            }
+        });
 
 
         // Xử lý sự kiện tìm kiếm

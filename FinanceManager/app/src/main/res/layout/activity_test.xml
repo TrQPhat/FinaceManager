@@ -24,12 +24,30 @@
         android:inputType="text"
         android:hint="Mật khẩu bạn muốn so sánh" />
 
-    <Button
-        android:id="@+id/searchButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tìm kiếm"
-        android:layout_marginBottom="16dp" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:text="Tìm kiếm" />
+
+        <Button
+            android:id="@+id/btnDatabase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:text="Database" />
+    </LinearLayout>
 
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"

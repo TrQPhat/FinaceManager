@@ -2,14 +2,19 @@ package com.example.financemanager.Activities;
 
 import static android.app.PendingIntent.getActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -47,6 +52,11 @@ public class CagetoryManagementActivity extends AppCompatActivity {
         addEvents();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void addControls(){
         user_id = getIntent().getIntExtra("user_id", 0);
 
@@ -79,5 +89,51 @@ public class CagetoryManagementActivity extends AppCompatActivity {
                 startActivityForResult(intent,123);
             }
         });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                new AlertDialog.Builder(CagetoryManagementActivity.this)
+                        .setTitle("Xóa danh mục")
+                        .setMessage("Bạn có chắc chắn muốn xóa danh mục này?")
+                        .setPositiveButton("Có", (dialog, which) -> {
+                            int category_id = list.get(position).getCategoryId();
+                            CategoryDAO categoryDAO = new CategoryDAO(CagetoryManagementActivity.this);
+                            if (categoryDAO.deleteCategory(category_id)){
+                                list.remove(position);
+                                adapter.notifyDataSetChanged();
+                                Toast.makeText(CagetoryManagementActivity.this, "Xóa danh mục thành công !!", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .setNegativeButton("Không", null)
+                        .show();
+
+                return false;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(CagetoryManagementActivity.this, EditCagetoryActivity.class);
+                intent.putExtra("user_id", user_id);
+                intent.putExtra("category", list.get(position));
+                startActivityForResult(intent,123);
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            Category category = (Category) data.getSerializableExtra("change");
+            if (resultCode == 123){
+                list.add(category);
+                adapter.notifyDataSetChanged();
+            }else {
+                //sửa
+            }
+        }
     }
 }

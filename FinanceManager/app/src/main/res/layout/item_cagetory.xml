@@ -17,6 +17,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
@@ -28,9 +30,9 @@
             android:gravity="center|start"
             android:paddingStart="10dp"
             android:text="Khác"
+            android:textColor="@color/blue_text"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/blue_text"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvType"

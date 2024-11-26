@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,7 @@ public class Query extends AppCompatActivity {
     private BudgetDAO budgetDAO;
     private NotificationDAO notificationDAO;
     Button btnSearch;
+    int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,9 @@ public class Query extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        EditText etUserId = findViewById(R.id.etUserId);
+        userId = Integer.parseInt(etUserId.getText().toString());
 
         // Initialize ListView
         listViewData = findViewById(R.id.listViewData);
@@ -84,12 +89,12 @@ public class Query extends AppCompatActivity {
     }
 
     private void showCategories() {
-//        List<Category> categories = categoryDAO.getAllCategories(int userId, String type);
-//        List<String> categoryStrings = new ArrayList<>();
-//        for (Category category : categories) {
-//            categoryStrings.add("ID: " + category.getCategoryId() + ", Name: " + category.getName());
-//        }
-//        displayData(categoryStrings);
+        List<Category> categories = categoryDAO.getAllCategories(userId);
+        List<String> categoryStrings = new ArrayList<>();
+        for (Category category : categories) {
+            categoryStrings.add("ID: " + category.getCategoryId() + ", Name: " + category.getName());
+        }
+        displayData(categoryStrings);
     }
 
     private void showTransactions() {

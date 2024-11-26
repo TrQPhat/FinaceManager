@@ -18,13 +18,13 @@ public class CategoryDAO {
     }
 
     // Thêm danh mục mới
-    public boolean addCategory(String name, String type, int userId, int iconId) {
+    public boolean addCategory(Category category) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("name", name);
-        values.put("type", type);
-        values.put("user_id", userId);
-        values.put("icon_id", iconId);
+        values.put("name", category.getName());
+        values.put("type", category.getType());
+        values.put("user_id", category.getUserId());
+        values.put("icon_id", category.getIconId());
 
         return db.insert("Categories", null, values) != -1;
     }
