@@ -1,15 +1,19 @@
 package com.example.financemanager.Model;
 
-public class Transaction {
-    private int transactionId;
-    private double amount;
+import java.io.Serializable;
+
+public class Transaction implements Serializable {
+    private int id;
+    private String name;
+    private int amount;
     private String date;
     private String description;
     private int categoryId;
     private int userId;
+    private String iconPath;
+    private String type;
 
-    public Transaction(int transactionId, double amount, String date, String description, int categoryId, int userId) {
-        this.transactionId = transactionId;
+    public Transaction(int amount, String date, String description, int categoryId, int userId) {
         this.amount = amount;
         this.date = date;
         this.description = description;
@@ -17,19 +21,39 @@ public class Transaction {
         this.userId = userId;
     }
 
-    public int getTransactionId() {
-        return transactionId;
+    public Transaction(int id,String name, int amount, String date, String description, int categoryId, int userId, String iconPath, String type) {
+        this.id = id;
+        this.name = name;
+        this.amount = amount;
+        this.date = date;
+        this.description = description;
+        this.categoryId = categoryId;
+        this.userId = userId;
+        this.iconPath = iconPath;
+        this.type = type;
     }
 
-    public void setTransactionId(int transactionId) {
-        this.transactionId = transactionId;
+    public int getId() {
+        return id;
     }
 
-    public double getAmount() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(int amount) {
         this.amount = amount;
     }
 
@@ -64,4 +88,8 @@ public class Transaction {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
+    public String iconPath() { return iconPath; }
+
+    public String getType() { return type; }
 }

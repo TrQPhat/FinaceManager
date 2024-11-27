@@ -83,7 +83,8 @@
                     <ImageView
                         android:id="@+id/imageView6"
                         android:layout_width="12dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="14dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:paddingLeft="10dp"
@@ -93,6 +94,7 @@
                         android:id="@+id/textView5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:text="Tổng số dư" />
                 </LinearLayout>
@@ -105,7 +107,7 @@
                     android:text="1,000,000"
                     android:textAlignment="textStart"
                     android:textColor="@color/white"
-                    android:textSize="32dp"
+                    android:textSize="25dp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -132,7 +134,8 @@
                     <ImageView
                         android:id="@+id/imageView62"
                         android:layout_width="12dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="14dp"
+                        android:layout_gravity="center_vertical"
                         android:layout_marginLeft="10dp"
                         android:layout_weight="1"
                         android:paddingLeft="10dp"
@@ -142,6 +145,7 @@
                         android:id="@+id/text2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         android:text="Tổng chi tiêu" />
                 </LinearLayout>
@@ -154,7 +158,7 @@
                     android:text="1,000,000"
                     android:textAlignment="textStart"
                     android:textColor="#0068FF"
-                    android:textSize="32dp"
+                    android:textSize="25dp"
                     android:fontFamily=""
                     android:textStyle="bold" />
             </LinearLayout>
@@ -178,10 +182,10 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
-                android:textColor="@color/black"
                 android:backgroundTint="#E9E6E0"
-                android:text="Thu nhập"
-                android:textSize="20dp"
+                android:text="Chi tiêu"
+                android:textColor="@color/black"
+                android:textSize="17dp"
                 android:textStyle="bold" />
 
             <Button
@@ -192,12 +196,13 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
-                android:textColor="@color/black"
                 android:alpha="0.6"
+                android:textColor="@color/black"
                 android:backgroundTint="#E9E6E0"
-                android:text="Chi tiêu"
-                android:textSize="20dp"
+                android:text="Thu nhập"
+                android:textSize="17dp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
     </LinearLayout>
@@ -206,8 +211,14 @@
         android:id="@+id/frame_container"
         android:layout_margin="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/custom_top_input"
+        android:backgroundTint="@color/light_green">
 
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
 </LinearLayout>

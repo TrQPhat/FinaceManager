@@ -1,21 +1,31 @@
 package com.example.financemanager.Activities;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.financemanager.Adapter.TransactionAdapter;
+import com.example.financemanager.DAO.CategoryDAO;
+import com.example.financemanager.DAO.TransactionDAO;
 import com.example.financemanager.DAO.UserDAO;
+import com.example.financemanager.Model.Transaction;
 import com.example.financemanager.Model.User;
 import com.example.financemanager.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -26,8 +36,16 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     TextView tvName, tvBalance;
-    Button btnIncome, btnOutcome;
+    Button btnIncome, btnExpense;
+    ListView listView;
+
     User user;
+    private String type;
+    TransactionDAO transactionDAO;
+    List<Transaction> list;
+    TransactionAdapter adapter;
+
+    private boolean isLongClick = false;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,23 +75,71 @@ public class HomeFragment extends Fragment {
         btnIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                load_IncomeFragment();
-
+                if(type.equals("Thu nhập")) return;
+                type = "Thu nhập";
                 //set trạng thái của nút
                 btnIncome.setAlpha(1f);
-                btnOutcome.setAlpha(0.6f);
+                btnExpense.setAlpha(0.6f);
+
+                //hiển thị danh sách thu nhập
+                list = transactionDAO.getTransactionsByType(user.getId() ,type);
+                adapter = new TransactionAdapter(getContext(), R.layout.transaction_item, list);
+                listView.setAdapter(adapter);
             }
         });
 
         // hiển thị chi tiêu
-        btnOutcome.setOnClickListener(new View.OnClickListener() {
+        btnExpense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                load_OutcomeFragment();
-
+                if(type.equals("Chi tiêu")) return;
+                type = "Chi tiêu";
                 //set trạng thái
                 btnIncome.setAlpha(0.6f);
-                btnOutcome.setAlpha(1f);
+                btnExpense.setAlpha(1f);
+
+                //hiện thị danh sách
+                list = transactionDAO.getTransactionsByType(user.getId() ,type);
+                adapter = new TransactionAdapter(getContext(), R.layout.transaction_item, list);
+                listView.setAdapter(adapter);
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                isLongClick = true;
+
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+                alertDialog.setCancelable(false);
+                alertDialog
+                        .setTitle("Xóa giao dịch")
+                        .setMessage("Bạn có chắc chắn muốn xóa giao dịch này?")
+                        .setPositiveButton("Có", (dialog, which) -> {
+                            int transaction_id = list.get(position).getId();
+                            if (transactionDAO.deleteTransaction(transaction_id)){
+                                list.remove(list.get(position));
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("Không", null)
+                        .show();
+                isLongClick = false;
+                return false;
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("transaction", list.get(position));
+                InputFragment inputFragment = new InputFragment();
+                inputFragment.setArguments(bundle);
+
+                BottomNavigationView activity = requireActivity().findViewById(R.id.bottomNavigationView);
+                activity.setSelectedItemId(R.id.input);
             }
         });
     }
@@ -84,14 +150,20 @@ public class HomeFragment extends Fragment {
             UserDAO userDAO = new UserDAO(activity);
             user = userDAO.getUserByEmail(activity.getEmail());
         }
+        type = "Chi tiêu";
 
+        listView= view.findViewById(R.id.listView);
         tvName = view.findViewById(R.id.tvName);
         tvName.setText(user.getUsername());
         tvBalance = view.findViewById(R.id.tvBalance);
         //set số dư
-        btnIncome = view.findViewById(R.id.btnExpense);
-        btnOutcome = view.findViewById(R.id.btnIncome);
-        load_IncomeFragment();
+        btnIncome = view.findViewById(R.id.btnIncome);
+        btnExpense = view.findViewById(R.id.btnExpense);
+
+        transactionDAO = new TransactionDAO(getContext());
+        list = transactionDAO.getTransactionsByType(user.getId() ,type);
+        adapter = new TransactionAdapter(getContext(), R.layout.transaction_item, list);
+        listView.setAdapter(adapter);
     }
 
     @Override
@@ -108,15 +180,7 @@ public class HomeFragment extends Fragment {
         addEvents();
     }
 
-    private void load_IncomeFragment(){
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, new IncomeFragment());
-        transaction.commit();
-    }
-
-    private void load_OutcomeFragment(){
-        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-        transaction.replace(R.id.frame_container, new OutcomeFragment());
-        transaction.commit();
+    public int getUserId(){
+        return user.getId();
     }
 }

@@ -183,14 +183,17 @@
                         android:backgroundTint="@color/light_green"
                         android:inputType="number"
                         android:paddingLeft="10dp"
-                        android:textSize="23sp" />
+                        android:paddingRight="15dp"
+                        android:textSize="23sp"
+                        android:textAlignment="textEnd"
+                        android:maxLength="9"/>
 
                     <TextView
                         android:id="@+id/textView13"
-                        android:layout_width="wrap_content"
+                        android:layout_width="30dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="1"
                         android:layout_marginLeft="5dp"
+                        android:layout_weight="1"
                         android:gravity="center"
                         android:text="₫"
                         android:textSize="23sp" />
