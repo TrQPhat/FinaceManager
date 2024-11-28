@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/activity_edit_cagetory.xml",
+        "source": "com.example.financemanager.app-main-34:/layout/activity_edit_cagetory.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_input.xml",
+        "source": "com.example.financemanager.app-main-34:/layout/fragment_input.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/item_category_grid.xml",
+        "source": "com.example.financemanager.app-main-34:/layout/item_category_grid.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_income.xml",
+        "source": "com.example.financemanager.app-main-34:/layout/fragment_income.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_home.xml",
+        "source": "com.example.financemanager.app-main-34:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_outcome.xml",
+        "source": "com.example.financemanager.app-main-34:/layout/fragment_outcome.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/transaction_item.xml",
+        "source": "com.example.financemanager.app-main-34:/layout/transaction_item.xml"
+    }
+]
