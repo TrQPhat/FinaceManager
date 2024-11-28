@@ -1,31 +1,21 @@
 package com.example.financemanager.Activities;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.financemanager.Adapter.TransactionAdapter;
-import com.example.financemanager.DAO.CategoryDAO;
-import com.example.financemanager.DAO.TransactionDAO;
 import com.example.financemanager.DAO.UserDAO;
-import com.example.financemanager.Model.Transaction;
 import com.example.financemanager.Model.User;
 import com.example.financemanager.R;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 public class HomeFragment extends Fragment {
 
@@ -36,16 +26,8 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     TextView tvName, tvBalance;
-    Button btnIncome, btnExpense;
-    ListView listView;
-
+    Button btnIncome, btnOutcome;
     User user;
-    private String type;
-    TransactionDAO transactionDAO;
-    List<Transaction> list;
-    TransactionAdapter adapter;
-
-    private boolean isLongClick = false;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -75,27 +57,23 @@ public class HomeFragment extends Fragment {
         btnIncome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(type.equals("Thu nhập")) return;
-                type = "Thu nhập";
+                load_IncomeFragment();
+
                 //set trạng thái của nút
                 btnIncome.setAlpha(1f);
-                btnExpense.setAlpha(0.6f);
-
-                //hiển thị danh sách thu nhập
-                list = transactionDAO.getTransactionsByType(user.getId() ,type);
-                adapter = new TransactionAdapter(getContext(), R.layout.transaction_item, list);
-                listView.setAdapter(adapter);
+                btnOutcome.setAlpha(0.6f);
             }
         });
 
         // hiển thị chi tiêu
-        btnExpense.setOnClickListener(new View.OnClickListener() {
+        btnOutcome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(type.equals("Chi tiêu")) return;
-                type = "Chi tiêu";
+                load_OutcomeFragment();
+
                 //set trạng thái
                 btnIncome.setAlpha(0.6f);
+<<<<<<< HEAD
                 btnExpense.setAlpha(1f);
 
                 //hiện thị danh sách
@@ -149,6 +127,9 @@ public class HomeFragment extends Fragment {
                         .replace(R.id.frame_layout, inputFragment)
                         .addToBackStack(null)
                         .commit();
+=======
+                btnOutcome.setAlpha(1f);
+>>>>>>> parent of 625ff51 (update Transaction)
             }
         });
     }
@@ -159,20 +140,14 @@ public class HomeFragment extends Fragment {
             UserDAO userDAO = new UserDAO(activity);
             user = userDAO.getUserByEmail(activity.getEmail());
         }
-        type = "Chi tiêu";
 
-        listView= view.findViewById(R.id.listView);
         tvName = view.findViewById(R.id.tvName);
         tvName.setText(user.getUsername());
         tvBalance = view.findViewById(R.id.tvBalance);
         //set số dư
-        btnIncome = view.findViewById(R.id.btnIncome);
-        btnExpense = view.findViewById(R.id.btnExpense);
-
-        transactionDAO = new TransactionDAO(getContext());
-        list = transactionDAO.getTransactionsByType(user.getId() ,type);
-        adapter = new TransactionAdapter(getContext(), R.layout.transaction_item, list);
-        listView.setAdapter(adapter);
+        btnIncome = view.findViewById(R.id.btnExpense);
+        btnOutcome = view.findViewById(R.id.btnIncome);
+        load_IncomeFragment();
     }
 
     @Override
@@ -189,7 +164,15 @@ public class HomeFragment extends Fragment {
         addEvents();
     }
 
-    public int getUserId(){
-        return user.getId();
+    private void load_IncomeFragment(){
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, new IncomeFragment());
+        transaction.commit();
+    }
+
+    private void load_OutcomeFragment(){
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_container, new OutcomeFragment());
+        transaction.commit();
     }
 }

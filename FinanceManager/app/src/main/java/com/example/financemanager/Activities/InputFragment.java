@@ -48,7 +48,7 @@ public class InputFragment extends Fragment {
     private CategoryAdapterGrid adapter;
     private List<Category> list;
     private CategoryDAO categoryDAO;
-    private int selectedCategoryId;
+    private Category selectedCategory;
     private  int user_Id;
     private String type;
     private String request;
@@ -83,13 +83,17 @@ public class InputFragment extends Fragment {
         btnSave = view.findViewById(R.id.btnSaveTransaction);
         tvDate.setText(FormatDate.DateToString(new Date()));
         type = "Chi tiêu";
+<<<<<<< HEAD
         selectedCategoryId = -1;
         request = "insert";
         transaction = null;
+=======
+>>>>>>> parent of 625ff51 (update Transaction)
 
         gridView = view.findViewById(R.id.gridView);
         categoryDAO = new CategoryDAO(view.getContext());
         list = categoryDAO.getAllCategoriesByType(user_Id, type);
+<<<<<<< HEAD
         adapter = new CategoryAdapterGrid(view.getContext(), R.layout.item_category_grid, list, selectedCategoryId);
         gridView.setAdapter(adapter);
 
@@ -116,6 +120,13 @@ public class InputFragment extends Fragment {
                 });
             }
         }
+=======
+        adapter = new CategoryAdapterGrid(view.getContext(), R.layout.item_category_grid, list);
+        gridView.setAdapter(adapter);
+
+        selectedCategory = null;
+
+>>>>>>> parent of 625ff51 (update Transaction)
     }
 
     private void addEvents(){
@@ -125,7 +136,6 @@ public class InputFragment extends Fragment {
                 if (type.equals("Thu nhập")) return;
                 btnIncome.setAlpha(1f);
                 btnExpense.setAlpha(0.3f);
-                btnSave.setText("Lưu thu nhập");
                 type = "Thu nhập";
                 list = categoryDAO.getAllCategoriesByType(user_Id, type);
                 adapter = new CategoryAdapterGrid(getContext(), R.layout.item_category_grid, list);
@@ -139,7 +149,6 @@ public class InputFragment extends Fragment {
                 if (type.equals("Chi tiêu")) return;
                 btnIncome.setAlpha(0.3f);
                 btnExpense.setAlpha(1f);
-                btnSave.setText("Lưu chi tiêu");
                 type = "Chi tiêu";
                 list = categoryDAO.getAllCategoriesByType(user_Id, type);
                 adapter = new CategoryAdapterGrid(getContext(), R.layout.item_category_grid, list);
@@ -181,10 +190,8 @@ public class InputFragment extends Fragment {
             }
         });
 
-        //Xử lý số tiền
-
         gridView.setOnItemClickListener((parent, view, position, id) -> {
-            selectedCategoryId = list.get(position).getCategoryId();
+            selectedCategory = list.get(position);
             view.setSelected(true);
         });
 
@@ -194,17 +201,18 @@ public class InputFragment extends Fragment {
                 String date = tvDate.getText().toString();
                 String description = etDescription.getText().toString();
                 String amount = etAmount.getText().toString();
-                if (amount.isEmpty() || Integer.parseInt(amount) < 1000){
-                    Toast.makeText(getContext(), "Vui lòng nhập số tiền (số tiền >= 1000)", Toast.LENGTH_SHORT).show();
+                if (amount.isEmpty()){
+                    Toast.makeText(getContext(), "Vui lòng nhập số tiền (>0)", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                if (selectedCategoryId == -1){
+                if (selectedCategory == null){
                     Toast.makeText(getContext(), "Vui lòng chọn danh mục", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 TransactionDAO transactionDAO = new TransactionDAO(getContext());
+<<<<<<< HEAD
 
                 if (request.equals("insert")) {
                     transaction = new Transaction(Integer.parseInt(amount), date, description, selectedCategoryId, user_Id);
@@ -222,6 +230,11 @@ public class InputFragment extends Fragment {
                         BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
                         bottomNavigationView.setSelectedItemId(R.id.home);
                     }
+=======
+                Transaction transaction = new Transaction(0, Double.parseDouble(amount), date, description, selectedCategory.getCategoryId(), user_Id);
+                if (transactionDAO.insertTransaction(transaction)){
+                    Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_SHORT).show();
+>>>>>>> parent of 625ff51 (update Transaction)
                 }
             }
         });
@@ -245,7 +258,6 @@ public class InputFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         addControls(view);
         addEvents();
     }

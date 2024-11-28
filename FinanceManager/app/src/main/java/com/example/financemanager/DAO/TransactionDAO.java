@@ -30,6 +30,7 @@ public class TransactionDAO {
         return db.insert("Transactions", null, values) != -1;
     }
 
+<<<<<<< HEAD
     public boolean deleteTransaction(int id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         return db.delete("Transactions", "transaction_id = ?", new String[]{String.valueOf(id)}) > 0;
@@ -49,61 +50,38 @@ public class TransactionDAO {
 
     public List<Transaction> getAllTransactions(int user_Id) {
         List<Transaction> transactionList = new ArrayList<>();
+=======
+    public boolean getAllTransactionsById(int id) {
+>>>>>>> parent of 625ff51 (update Transaction)
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
-        String query ="SELECT Transactions.transaction_id, Categories.name, Transactions.amount, Transactions.date,Transactions.description, "
-                + "Transactions.category_id, Transactions.user_id, Icon.path, Categories.type "
-                + "FROM Transactions JOIN Categories on Transactions.category_id = Categories.category_id"
-                + " JOIN Icon on Categories.icon_id = Icon.id WHERE Transactions.user_id=?";
         try {
-            cursor = db.rawQuery(query, new String[]{String.valueOf(user_Id)}, null);
-            if (cursor.moveToFirst()) {
-                do {
-                    Transaction transaction = new Transaction(
-                            cursor.getInt(0),    //transaction_id
-                            cursor.getString(1), //name
-                            cursor.getInt(2),    //amount
-                            cursor.getString(3), //date
-                            cursor.getString(4), //description
-                            cursor.getInt(5),    //category_id
-                            cursor.getInt(6),    //user_id
-                            cursor.getString(7), //iconPath
-                            cursor.getString(8)  //type
-                    );
-                    transactionList.add(transaction);
-                } while (cursor.moveToNext());
-            }
+            cursor = db.rawQuery("SELECT * FROM Transactions WHERE transaction_id = ?", new String[]{String.valueOf(id)});
+            return cursor.getCount() > 0;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (cursor != null) cursor.close();
             db.close();
         }
-        return transactionList;
+        return false;
     }
 
-    public List<Transaction> getTransactionsByType(int user_Id, String type) {
+    public List<Transaction> getAllTransactions() {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = null;
-        String query ="SELECT Transactions.transaction_id, Categories.name, Transactions.amount, Transactions.date, "
-                + "Transactions.description, Transactions.category_id, Transactions.user_id, Icon.path, Categories.type "
-                + "FROM Transactions JOIN Categories on Transactions.category_id = Categories.category_id"
-                + " JOIN Icon on Categories.icon_id = Icon.id WHERE Transactions.user_id= ? and Categories.type = ?";
         try {
-            cursor = db.rawQuery(query, new String[]{String.valueOf(user_Id), type}, null);
+            cursor = db.rawQuery("SELECT * FROM Transactions", null);
             if (cursor.moveToFirst()) {
                 do {
                     Transaction transaction = new Transaction(
-                            cursor.getInt(0),    //transaction_id
-                            cursor.getString(1), //name
-                            cursor.getInt(2),    //amount
-                            cursor.getString(3), //date
-                            cursor.getString(4), //description
-                            cursor.getInt(5),    //category_id
-                            cursor.getInt(6),    //user_id
-                            cursor.getString(7), //iconPath
-                            cursor.getString(8)  //type
+                            cursor.getInt(cursor.getColumnIndexOrThrow("transaction_id")),
+                            cursor.getDouble(cursor.getColumnIndexOrThrow("amount")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("description")),
+                            cursor.getInt(cursor.getColumnIndexOrThrow("category_id")),
+                            cursor.getInt(cursor.getColumnIndexOrThrow("user_id"))
                     );
                     transactionList.add(transaction);
                 } while (cursor.moveToNext());

@@ -106,6 +106,7 @@ public class CagetoryManagementActivity extends AppCompatActivity {
                             if (categoryDAO.deleteCategory(category_id)){
                                 list.remove(list.get(position));
                                 adapter.notifyDataSetChanged();
+                                Toast.makeText(CagetoryManagementActivity.this, "Xóa danh mục thành công !!", Toast.LENGTH_SHORT).show();
                             }
                             isLongClick = false;
                         })
