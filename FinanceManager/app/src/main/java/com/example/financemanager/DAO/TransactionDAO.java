@@ -35,6 +35,18 @@ public class TransactionDAO {
         return db.delete("Transactions", "transaction_id = ?", new String[]{String.valueOf(id)}) > 0;
     }
 
+    public boolean updateTransaction(Transaction transaction){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put("amount", transaction.getAmount());
+        values.put("date", transaction.getDate());
+        values.put("description", transaction.getDescription());
+        values.put("category_id", transaction.getCategoryId());
+
+        return db.update("Transactions", values, "transaction_id = ?", new String[]{String.valueOf(transaction.getId())}) > 0;
+    }
+
     public List<Transaction> getAllTransactions(int user_Id) {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();

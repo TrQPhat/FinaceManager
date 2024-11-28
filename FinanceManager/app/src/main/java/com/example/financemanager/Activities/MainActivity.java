@@ -14,9 +14,28 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.financemanager.R;
 import com.example.financemanager.Utils.DBConfigUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
     TextView textView;
+    String email;
+    FirebaseAuth mAuth;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            email = currentUser.getEmail();
+            finish();
+            Intent intent = new Intent(MainActivity.this, NavigationViewActivity.class);
+            intent.putExtra("email", email);
+            startActivity(intent);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadDatabase() {
-        //DBConfigUtil.deleteDatabase(this);
+        DBConfigUtil.deleteDatabase(this);
         DBConfigUtil.copyDatabaseFromAssets(this);
     }
 
@@ -50,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void addControls() {
         textView = findViewById(R.id.tvStart);
-        test();
+        mAuth = FirebaseAuth.getInstance();
+        //test();
     }
 
     private void test(){

@@ -6,7 +6,6 @@ import android.text.Html;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -23,6 +23,11 @@ import com.example.financemanager.DAO.UserDAO;
 import com.example.financemanager.Model.User;
 import com.example.financemanager.R;
 import com.example.financemanager.Utils.Validate;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText etTen, etEmail, etPassword, etRePass;
@@ -31,6 +36,7 @@ public class SignUpActivity extends AppCompatActivity {
     TextView tvQuayLai;
     ImageButton btnTogglePassword, btnToggleRePass;
     private boolean isPasswordVisible = false, isRepassVisible = false;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,7 @@ public class SignUpActivity extends AppCompatActivity {
         tvQuayLai.setText(Html.fromHtml("<u>Quay lại</u>"));
         btnTogglePassword = findViewById(R.id.btn_toggle_password);
         btnToggleRePass = findViewById(R.id.btn_toggle_repass);
+        mAuth = FirebaseAuth.getInstance();
     }
     private void addEvents() {
         tvQuayLai.setOnClickListener(v -> {
@@ -97,12 +104,25 @@ public class SignUpActivity extends AppCompatActivity {
                         return;
                     }
 
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        User user = new User(ten, email, password);
+                                        UserDAO userDAO = new UserDAO(SignUpActivity.this);
+                                        userDAO.addUser(user);
+                                        Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                                        finish();
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Toast.makeText(SignUpActivity.this, "Xác thực thất bại.",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
 
-                    User user = new User(ten, email, password);
-                    UserDAO userDAO = new UserDAO(SignUpActivity.this);
-                    userDAO.addUser(user);
-                    Toast.makeText(SignUpActivity.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    finish();
                 }
                 else Toast.makeText(SignUpActivity.this,"Vui lòng đồng ý với điều khoản sử dụng", Toast.LENGTH_SHORT).show();
             }

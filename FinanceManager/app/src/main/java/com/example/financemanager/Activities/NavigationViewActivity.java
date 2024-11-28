@@ -1,5 +1,6 @@
 package com.example.financemanager.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -16,12 +17,15 @@ import com.example.financemanager.Model.User;
 import com.example.financemanager.R;
 import com.example.financemanager.Utils.FragmentUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class NavigationViewActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     String email;
     User user;
+    FirebaseAuth mAuth;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,9 +90,19 @@ public class NavigationViewActivity extends AppCompatActivity {
     }
 
     private void addControls() {
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null) {
+            Intent intent = new Intent(NavigationViewActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        } else {
+            email = currentUser.getEmail();
+        }
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.frame_layout , new HomeFragment());
-        email = getIntent().getStringExtra("email");
+
         UserDAO userDAO = new UserDAO(this);
         user = userDAO.getUserByEmail(email);
     }

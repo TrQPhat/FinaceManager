@@ -122,10 +122,10 @@ public class HomeFragment extends Fragment {
                                 list.remove(list.get(position));
                                 adapter.notifyDataSetChanged();
                             }
+                            isLongClick = false;
                         })
-                        .setNegativeButton("Không", null)
+                        .setNegativeButton("Không", (dialog, which) -> {isLongClick = false;})
                         .show();
-                isLongClick = false;
                 return false;
             }
         });
@@ -133,13 +133,22 @@ public class HomeFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (isLongClick) return;
+
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("transaction", list.get(position));
+
                 InputFragment inputFragment = new InputFragment();
                 inputFragment.setArguments(bundle);
 
-                BottomNavigationView activity = requireActivity().findViewById(R.id.bottomNavigationView);
-                activity.setSelectedItemId(R.id.input);
+                BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+                bottomNavigationView.setSelectedItemId(R.id.input);
+
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.frame_layout, inputFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
     }

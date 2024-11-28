@@ -26,6 +26,7 @@ import com.example.financemanager.Model.Category;
 import com.example.financemanager.Model.Transaction;
 import com.example.financemanager.R;
 import com.example.financemanager.Utils.FormatDate;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Date;
 import java.util.List;
@@ -50,6 +51,8 @@ public class InputFragment extends Fragment {
     private int selectedCategoryId;
     private  int user_Id;
     private String type;
+    private String request;
+    private Transaction transaction;
 
     public InputFragment() {
         // Required empty public constructor
@@ -81,24 +84,38 @@ public class InputFragment extends Fragment {
         tvDate.setText(FormatDate.DateToString(new Date()));
         type = "Chi tiêu";
         selectedCategoryId = -1;
+        request = "insert";
+        transaction = null;
+
+        gridView = view.findViewById(R.id.gridView);
+        categoryDAO = new CategoryDAO(view.getContext());
+        list = categoryDAO.getAllCategoriesByType(user_Id, type);
+        adapter = new CategoryAdapterGrid(view.getContext(), R.layout.item_category_grid, list, selectedCategoryId);
+        gridView.setAdapter(adapter);
 
         Bundle bundle = getArguments();
         if (bundle != null){
-            Transaction transaction = (Transaction) bundle.getSerializable("transaction");
+            transaction = (Transaction) bundle.getSerializable("transaction");
             if (transaction!=null) {
                 tvDate.setText(transaction.getDate());
                 etDescription.setText(transaction.getDescription());
                 etAmount.setText(String.valueOf(transaction.getAmount()));
                 selectedCategoryId = transaction.getCategoryId();
+                request = "update";
+
+                gridView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        for (int i=0; i<gridView.getChildCount(); i++){
+                            if (adapter.getItem(i).getCategoryId()== selectedCategoryId) {
+                                View view = gridView.getChildAt(i);
+                                view.setSelected(true);
+                            }
+                        }
+                    }
+                });
             }
         }
-
-        gridView = view.findViewById(R.id.gridView);
-        categoryDAO = new CategoryDAO(view.getContext());
-        list = categoryDAO.getAllCategoriesByType(user_Id, type);
-        adapter = new CategoryAdapterGrid(view.getContext(), R.layout.item_category_grid, list);
-        gridView.setAdapter(adapter);
-
     }
 
     private void addEvents(){
@@ -127,6 +144,7 @@ public class InputFragment extends Fragment {
                 list = categoryDAO.getAllCategoriesByType(user_Id, type);
                 adapter = new CategoryAdapterGrid(getContext(), R.layout.item_category_grid, list);
                 gridView.setAdapter(adapter);
+                //adapter.notifyDataSetChanged(); //không hoạt động
             }
         });
         btnAddCagetory.setOnClickListener(new View.OnClickListener() {
@@ -187,9 +205,23 @@ public class InputFragment extends Fragment {
                 }
 
                 TransactionDAO transactionDAO = new TransactionDAO(getContext());
-                Transaction transaction = new Transaction(Integer.parseInt(amount), date, description, selectedCategoryId, user_Id);
-                if (transactionDAO.insertTransaction(transaction)){
-                    Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_SHORT).show();
+
+                if (request.equals("insert")) {
+                    transaction = new Transaction(Integer.parseInt(amount), date, description, selectedCategoryId, user_Id);
+                    if (transactionDAO.insertTransaction(transaction)){
+                        Toast.makeText(getContext(), "Lưu thành công", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else {
+                    transaction.setAmount(Integer.parseInt(amount));
+                    transaction.setDate(date);
+                    transaction.setDescription(description);
+                    transaction.setCategoryId(selectedCategoryId);
+                    if (transactionDAO.updateTransaction(transaction)){
+                        Toast.makeText(getContext(), "Sửa thành công", Toast.LENGTH_SHORT).show();
+                        BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+                        bottomNavigationView.setSelectedItemId(R.id.home);
+                    }
                 }
             }
         });

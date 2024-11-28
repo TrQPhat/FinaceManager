@@ -1,6 +1,7 @@
 package com.example.financemanager.Adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class CategoryAdapterGrid extends ArrayAdapter<Category> {
     Context context;
     int layout;
     List<Category> list;
+    int selectedCategoryId = -1;
 
     public CategoryAdapterGrid(@NonNull Context context, int layout, @NonNull List<Category> list) {
         super(context, layout, list);
@@ -28,9 +30,18 @@ public class CategoryAdapterGrid extends ArrayAdapter<Category> {
         this.list = list;
     }
 
+    public CategoryAdapterGrid(@NonNull Context context, int layout, @NonNull List<Category> list, int categoryId) {
+        super(context, layout, list);
+        this.context = context;
+        this.layout = layout;
+        this.list = list;
+        this.selectedCategoryId = categoryId;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+
         if (convertView == null){
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout,null);
@@ -44,6 +55,10 @@ public class CategoryAdapterGrid extends ArrayAdapter<Category> {
         if (name.length() > 14)
             name = name.substring(0, 11) + "...";
         tvName.setText(name);
+
+        if (selectedCategoryId == category.getCategoryId()){
+            convertView.setBackgroundResource(R.drawable.custom_icon_grid);
+        }
 
         return convertView;
     }

@@ -1,9 +1,12 @@
 package com.example.financemanager.Activities;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -18,6 +22,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.financemanager.DAO.UserDAO;
 import com.example.financemanager.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -25,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvForgetPass, tvSignUp, btnLogin;
     ImageButton btnTogglePassword;
     private boolean isPasswordVisible = false;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         tvSignUp = findViewById(R.id.tvSignUp);
         btnLogin = findViewById(R.id.btnLogin);
         btnTogglePassword = findViewById(R.id.btn_toggle_password);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     private void addEvents() {
@@ -91,11 +102,25 @@ public class LoginActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
         if (userDAO.checkLogin(email, password)) {
-            userDAO.updateLastLogin(email);
-            finish();
-            Intent intent = new Intent(LoginActivity.this, NavigationViewActivity.class);
-            intent.putExtra("email", email);
-            startActivity(intent);
+
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //login success
+                                userDAO.updateLastLogin(email);
+                                finish();
+                                Intent intent = new Intent(LoginActivity.this, NavigationViewActivity.class);
+                                startActivity(intent);
+                            } else {
+
+                                Toast.makeText(LoginActivity.this, "Xác thực không thành công.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+
         }
         else Toast.makeText(LoginActivity.this, "Sai email hoặc mật khẩu", Toast.LENGTH_SHORT).show();
     }
