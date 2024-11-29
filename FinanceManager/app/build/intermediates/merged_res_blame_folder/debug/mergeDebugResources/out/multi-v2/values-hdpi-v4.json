@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.financemanager.app-mergeDebugResources-30:/values-hdpi-v4/values-hdpi-v4.xml",
+            "outputFile": "com.example.financemanager.app-mergeDebugResources-33:/values-hdpi-v4/values-hdpi-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\8ed93d7a6c5c63272c77b1028dc30ec8\\transformed\\appcompat-1.7.0\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
+                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\8baf07e60f2437486006ffb827c75344\\transformed\\appcompat-1.7.0\\res\\values-hdpi-v4\\values-hdpi-v4.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

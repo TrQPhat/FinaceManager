@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,9 @@ public final class FragmentHomeBinding implements ViewBinding {
   public final ImageView imageView63;
 
   @NonNull
+  public final ListView listView;
+
+  @NonNull
   public final TextView text2;
 
   @NonNull
@@ -64,8 +68,9 @@ public final class FragmentHomeBinding implements ViewBinding {
   private FragmentHomeBinding(@NonNull LinearLayout rootView, @NonNull Button btnExpense,
       @NonNull Button btnIncome, @NonNull FrameLayout frameContainer, @NonNull ImageView imageView4,
       @NonNull ImageView imageView6, @NonNull ImageView imageView62, @NonNull ImageView imageView63,
-      @NonNull TextView text2, @NonNull TextView textView14, @NonNull TextView textView5,
-      @NonNull TextView tvBalance, @NonNull TextView tvExpense, @NonNull TextView tvName) {
+      @NonNull ListView listView, @NonNull TextView text2, @NonNull TextView textView14,
+      @NonNull TextView textView5, @NonNull TextView tvBalance, @NonNull TextView tvExpense,
+      @NonNull TextView tvName) {
     this.rootView = rootView;
     this.btnExpense = btnExpense;
     this.btnIncome = btnIncome;
@@ -74,6 +79,7 @@ public final class FragmentHomeBinding implements ViewBinding {
     this.imageView6 = imageView6;
     this.imageView62 = imageView62;
     this.imageView63 = imageView63;
+    this.listView = listView;
     this.text2 = text2;
     this.textView14 = textView14;
     this.textView5 = textView5;
@@ -151,6 +157,12 @@ public final class FragmentHomeBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.listView;
+      ListView listView = ViewBindings.findChildViewById(rootView, id);
+      if (listView == null) {
+        break missingId;
+      }
+
       id = R.id.text2;
       TextView text2 = ViewBindings.findChildViewById(rootView, id);
       if (text2 == null) {
@@ -188,8 +200,8 @@ public final class FragmentHomeBinding implements ViewBinding {
       }
 
       return new FragmentHomeBinding((LinearLayout) rootView, btnExpense, btnIncome, frameContainer,
-          imageView4, imageView6, imageView62, imageView63, text2, textView14, textView5, tvBalance,
-          tvExpense, tvName);
+          imageView4, imageView6, imageView62, imageView63, listView, text2, textView14, textView5,
+          tvBalance, tvExpense, tvName);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.financemanager.app-mergeDebugResources-30:/values-en-rAU/values-en-rAU.xml",
+            "outputFile": "com.example.financemanager.app-mergeDebugResources-33:/values-en-rAU/values-en-rAU.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\106fc8308705c1bbb993becb6023ada5\\transformed\\core-1.13.0\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\a6c39e1868892153df5f0331a1c5878a\\transformed\\core-1.13.0\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9",
                         "startColumns": "4,4,4,4,4,4,4,4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\8ed93d7a6c5c63272c77b1028dc30ec8\\transformed\\appcompat-1.7.0\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\8baf07e60f2437486006ffb827c75344\\transformed\\appcompat-1.7.0\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

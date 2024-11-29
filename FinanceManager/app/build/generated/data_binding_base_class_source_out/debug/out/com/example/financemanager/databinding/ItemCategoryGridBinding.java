@@ -21,14 +21,18 @@ public final class ItemCategoryGridBinding implements ViewBinding {
   private final LinearLayout rootView;
 
   @NonNull
+  public final LinearLayout categoryItem;
+
+  @NonNull
   public final ImageView imageView;
 
   @NonNull
   public final TextView tvName;
 
-  private ItemCategoryGridBinding(@NonNull LinearLayout rootView, @NonNull ImageView imageView,
-      @NonNull TextView tvName) {
+  private ItemCategoryGridBinding(@NonNull LinearLayout rootView,
+      @NonNull LinearLayout categoryItem, @NonNull ImageView imageView, @NonNull TextView tvName) {
     this.rootView = rootView;
+    this.categoryItem = categoryItem;
     this.imageView = imageView;
     this.tvName = tvName;
   }
@@ -60,6 +64,8 @@ public final class ItemCategoryGridBinding implements ViewBinding {
     // This is done to optimize the compiled bytecode for size and performance.
     int id;
     missingId: {
+      LinearLayout categoryItem = (LinearLayout) rootView;
+
       id = R.id.imageView;
       ImageView imageView = ViewBindings.findChildViewById(rootView, id);
       if (imageView == null) {
@@ -72,7 +78,7 @@ public final class ItemCategoryGridBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ItemCategoryGridBinding((LinearLayout) rootView, imageView, tvName);
+      return new ItemCategoryGridBinding((LinearLayout) rootView, categoryItem, imageView, tvName);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

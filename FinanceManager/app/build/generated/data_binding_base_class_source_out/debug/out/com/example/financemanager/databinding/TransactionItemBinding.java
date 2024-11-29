@@ -27,16 +27,21 @@ public final class TransactionItemBinding implements ViewBinding {
   public final ImageView imageView5;
 
   @NonNull
+  public final TextView tvAmount;
+
+  @NonNull
   public final TextView tvDate;
 
   @NonNull
   public final TextView tvName;
 
   private TransactionItemBinding(@NonNull LinearLayout rootView, @NonNull ImageView imageView,
-      @NonNull ImageView imageView5, @NonNull TextView tvDate, @NonNull TextView tvName) {
+      @NonNull ImageView imageView5, @NonNull TextView tvAmount, @NonNull TextView tvDate,
+      @NonNull TextView tvName) {
     this.rootView = rootView;
     this.imageView = imageView;
     this.imageView5 = imageView5;
+    this.tvAmount = tvAmount;
     this.tvDate = tvDate;
     this.tvName = tvName;
   }
@@ -80,6 +85,12 @@ public final class TransactionItemBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.tvAmount;
+      TextView tvAmount = ViewBindings.findChildViewById(rootView, id);
+      if (tvAmount == null) {
+        break missingId;
+      }
+
       id = R.id.tvDate;
       TextView tvDate = ViewBindings.findChildViewById(rootView, id);
       if (tvDate == null) {
@@ -92,8 +103,8 @@ public final class TransactionItemBinding implements ViewBinding {
         break missingId;
       }
 
-      return new TransactionItemBinding((LinearLayout) rootView, imageView, imageView5, tvDate,
-          tvName);
+      return new TransactionItemBinding((LinearLayout) rootView, imageView, imageView5, tvAmount,
+          tvDate, tvName);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

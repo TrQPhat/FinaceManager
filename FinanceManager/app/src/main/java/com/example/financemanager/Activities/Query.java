@@ -91,10 +91,7 @@ public class Query extends AppCompatActivity {
     }
 
     private void showCategories() {
-        if (etUserId.getText().toString().isEmpty()) {
-            Toast.makeText(this, "Vui lòng nhập userId", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        if (!validateUserId()) return;
         userId = Integer.parseInt(etUserId.getText().toString());
         List<Category> categories = categoryDAO.getAllCategories(userId);
         List<String> categoryStrings = new ArrayList<>();
@@ -105,10 +102,12 @@ public class Query extends AppCompatActivity {
     }
 
     private void showTransactions() {
-        List<Transaction> transactions = transactionDAO.getAllTransactions();
+        if (!validateUserId()) return;
+        userId = Integer.parseInt(etUserId.getText().toString());
+        List<Transaction> transactions = transactionDAO.getAllTransactions(userId);
         List<String> transactionStrings = new ArrayList<>();
         for (Transaction transaction : transactions) {
-            transactionStrings.add("ID: " + transaction.getTransactionId() + ", Amount: " + transaction.getAmount());
+            transactionStrings.add("ID: " + transaction.getName() + ", Amount: " + transaction.getAmount());
         }
         displayData(transactionStrings);
     }
@@ -134,5 +133,13 @@ public class Query extends AppCompatActivity {
     private void displayData(List<String> data) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, data);
         listViewData.setAdapter(adapter);
+    }
+
+    private boolean validateUserId() {
+        if (etUserId.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập userId", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 }

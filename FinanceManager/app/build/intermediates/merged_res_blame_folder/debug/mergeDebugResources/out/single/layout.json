@@ -1,30 +1,78 @@
 [
     {
-        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/activity_edit_cagetory.xml",
-        "source": "com.example.financemanager.app-main-34:/layout/activity_edit_cagetory.xml"
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/fragment_setting.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/fragment_setting.xml"
     },
     {
-        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_input.xml",
-        "source": "com.example.financemanager.app-main-34:/layout/fragment_input.xml"
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/calendar_dialog.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/calendar_dialog.xml"
     },
     {
-        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/item_category_grid.xml",
-        "source": "com.example.financemanager.app-main-34:/layout/item_category_grid.xml"
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/fragment_notification.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/fragment_notification.xml"
     },
     {
-        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_income.xml",
-        "source": "com.example.financemanager.app-main-34:/layout/fragment_income.xml"
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/layout_input_otp.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/layout_input_otp.xml"
     },
     {
-        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_home.xml",
-        "source": "com.example.financemanager.app-main-34:/layout/fragment_home.xml"
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_navigation_view.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_navigation_view.xml"
     },
     {
-        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/fragment_outcome.xml",
-        "source": "com.example.financemanager.app-main-34:/layout/fragment_outcome.xml"
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_edit_cagetory.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_edit_cagetory.xml"
     },
     {
-        "merged": "com.example.financemanager.app-mergeDebugResources-31:/layout/transaction_item.xml",
-        "source": "com.example.financemanager.app-main-34:/layout/transaction_item.xml"
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_query.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_query.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/fragment_input.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/fragment_input.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/transaction_item.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/transaction_item.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_sign_up.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_sign_up.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/item_cagetory.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/item_cagetory.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_login.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_login.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_test.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_test.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_cagetory_management.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_cagetory_management.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/fragment_home.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/fragment_statement.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/fragment_statement.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/activity_main.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/item_category_grid.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/item_category_grid.xml"
+    },
+    {
+        "merged": "com.example.financemanager.app-mergeDebugResources-34:/layout/item_icon_grid.xml",
+        "source": "com.example.financemanager.app-main-37:/layout/item_icon_grid.xml"
     }
 ]

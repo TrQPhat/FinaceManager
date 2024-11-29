@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.financemanager.app-mergeDebugResources-30:/values-small-v4/values-small-v4.xml",
+            "outputFile": "com.example.financemanager.app-mergeDebugResources-33:/values-small-v4/values-small-v4.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\660e3830e964df2353f90db640fbedab\\transformed\\material-1.12.0\\res\\values-small-v4\\values-small-v4.xml",
+                    "source": "C:\\Users\\tqpha\\.gradle\\caches\\transforms-4\\b6aba6d8ba27197b896839fdaed5dd4b\\transformed\\material-1.12.0\\res\\values-small-v4\\values-small-v4.xml",
                     "from": {
                         "startLines": "2,3,4,5",
                         "startColumns": "4,4,4,4",
