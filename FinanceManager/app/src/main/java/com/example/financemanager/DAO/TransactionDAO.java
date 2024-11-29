@@ -47,6 +47,27 @@ public class TransactionDAO {
         return db.update("Transactions", values, "transaction_id = ?", new String[]{String.valueOf(transaction.getId())}) > 0;
     }
 
+    public int getTotalByType(int userId, String type) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        int totalIncome = 0;
+
+        String query = "SELECT SUM(amount) AS total " +
+                "FROM Transactions JOIN Categories ON Transactions.category_id = Categories.category_id " +
+                "WHERE Transactions.user_id = ? AND Categories.type = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), type});
+
+        if (cursor.moveToFirst()) {
+            totalIncome = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return totalIncome;
+    }
+
+
     public List<Transaction> getAllTransactions(int user_Id) {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();

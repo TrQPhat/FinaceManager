@@ -52,12 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void addControls() {
         textView = findViewById(R.id.tvStart);
-        //test();
+        test();
     }
 
     private void test(){
         Intent intent = new Intent(MainActivity.this, NavigationViewActivity.class);
-        intent.putExtra("email", "abc");
+        intent.putExtra("email", "tqphat31082k3@gmail.com");
         startActivity(intent);
     }
 

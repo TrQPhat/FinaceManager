@@ -25,6 +25,7 @@ import com.example.financemanager.Model.User;
 import com.example.financemanager.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -35,7 +36,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    TextView tvName, tvBalance;
+    TextView tvName, tvBalance, tvExpense;
     Button btnIncome, btnExpense;
     ListView listView;
 
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment {
     TransactionAdapter adapter;
 
     private boolean isLongClick = false;
+    int balance, income, expense;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -161,15 +163,24 @@ public class HomeFragment extends Fragment {
         }
         type = "Chi tiêu";
 
+        transactionDAO = new TransactionDAO(getContext());
+
         listView= view.findViewById(R.id.listView);
         tvName = view.findViewById(R.id.tvName);
         tvName.setText(user.getUsername());
         tvBalance = view.findViewById(R.id.tvBalance);
-        //set số dư
+        tvExpense = view.findViewById(R.id.tvExpense);
+
+        income = transactionDAO.getTotalByType(user.getId(), "Thu nhập");
+        expense = transactionDAO.getTotalByType(user.getId(), "Chi tiêu");
+
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        tvBalance.setText(decimalFormat.format(income - expense));
+        tvExpense.setText(decimalFormat.format(expense));
+
         btnIncome = view.findViewById(R.id.btnIncome);
         btnExpense = view.findViewById(R.id.btnExpense);
 
-        transactionDAO = new TransactionDAO(getContext());
         list = transactionDAO.getTransactionsByType(user.getId() ,type);
         adapter = new TransactionAdapter(getContext(), R.layout.transaction_item, list);
         listView.setAdapter(adapter);

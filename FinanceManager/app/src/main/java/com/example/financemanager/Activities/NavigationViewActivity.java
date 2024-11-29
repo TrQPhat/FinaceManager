@@ -88,13 +88,6 @@ public class NavigationViewActivity extends AppCompatActivity {
 
     private void addControls() {
 
-//        if (currentUser == null) {
-//            Intent intent = new Intent(NavigationViewActivity.this, LoginActivity.class);
-//            startActivity(intent);
-//            finish();
-//        } else {
-//            email = currentUser.getEmail();
-//        }
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         FragmentUtils.replaceFragment(getSupportFragmentManager(), R.id.frame_layout , new HomeFragment());
 
