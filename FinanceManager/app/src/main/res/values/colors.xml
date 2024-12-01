@@ -12,5 +12,6 @@
     <color name="pink">#D6D6D6</color>
     <color name="main_bg">#E0F0F0</color>
     <color name="light_green">#F1FFF3</color>
+    <color name="main_green">#00D09E</color>
     <color name="blue_text">#0068FF</color>
 </resources>

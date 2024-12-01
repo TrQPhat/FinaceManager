@@ -59,8 +59,6 @@ dependencies {
     androidTestImplementation(libs.testng)
     implementation(libs.android.mail)
     implementation(libs.android.activation)
-
-    //implementation (libs.android.activation)
-
+    implementation (libs.mpandroidchart)
 
 }

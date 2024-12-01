@@ -16,11 +16,17 @@ public class FormatDate {
         return formatter.format(date);
     }
 
-    public static String StringToStringByPattern(String inputDate, String inputPattern) throws Exception {
+    public static String StringToStringByPattern(String inputDate, String inputPattern){
 
         SimpleDateFormat inputFormatter = new SimpleDateFormat(inputPattern);
 
-        Date date = inputFormatter.parse(inputDate);
+        Date date = null;
+        try {
+            date = inputFormatter.parse(inputDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
 
         SimpleDateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(date);

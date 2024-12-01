@@ -6,9 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.financemanager.Model.Transaction;
+import com.example.financemanager.Utils.FormatDate;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TransactionDAO {
     private DBHelper dbHelper;
@@ -137,6 +140,30 @@ public class TransactionDAO {
         }
         return transactionList;
     }
+
+    public Map<String, Integer> getMonthlyValuesByType(int userId, String type) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Map<String, Integer> data = new LinkedHashMap<>();
+
+        String query = "SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total " +
+                "FROM Transactions JOIN Categories ON Transactions.category_id = Categories.category_id " +
+                "WHERE Transactions.user_id = ? AND Categories.type = ? " +
+                "GROUP BY month " +
+                "ORDER BY month ASC";
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), type});
+
+        while (cursor.moveToNext()) {
+            String month = cursor.getString(0);
+            int total = cursor.getInt(1);
+            data.put(month, total);
+        }
+
+        cursor.close();
+        db.close();
+        return data;
+    }
+
 
 }
 
