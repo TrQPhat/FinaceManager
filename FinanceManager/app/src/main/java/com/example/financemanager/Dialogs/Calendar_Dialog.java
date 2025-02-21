@@ -30,7 +30,7 @@ public class Calendar_Dialog extends Dialog {
 
         AtomicReference<String> selectedDate = new AtomicReference<>(FormatDate.DateToString(new Date()));
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
-            selectedDate.set(dayOfMonth + "/" + (month + 1) + "/" + year);
+            selectedDate.set(dayOfMonth + "/" + ((month + 1)>9?(month + 1):"0"+(month + 1)) + "/" + year);
         });
         tvHuy.setOnClickListener(view -> {
             dialog.dismiss();

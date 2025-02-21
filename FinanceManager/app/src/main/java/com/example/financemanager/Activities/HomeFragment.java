@@ -14,10 +14,8 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.financemanager.Adapter.TransactionAdapter;
-import com.example.financemanager.DAO.CategoryDAO;
 import com.example.financemanager.DAO.TransactionDAO;
 import com.example.financemanager.DAO.UserDAO;
 import com.example.financemanager.Model.Transaction;
@@ -178,8 +176,8 @@ public class HomeFragment extends Fragment {
         tvBalance.setText(decimalFormat.format(income - expense));
         tvExpense.setText(decimalFormat.format(expense));
 
-        btnIncome = view.findViewById(R.id.btnIncome);
-        btnExpense = view.findViewById(R.id.btnExpense);
+        btnIncome = view.findViewById(R.id.year);
+        btnExpense = view.findViewById(R.id.month);
 
         list = transactionDAO.getTransactionsByType(user.getId() ,type);
         adapter = new TransactionAdapter(getContext(), R.layout.transaction_item, list);

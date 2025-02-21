@@ -24,7 +24,7 @@
             android:padding="7dp">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnExpense"
+                android:id="@+id/month"
                 style="@android:style/Widget.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -37,7 +37,7 @@
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnIncome"
+                android:id="@+id/year"
                 style="@android:style/Widget.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"

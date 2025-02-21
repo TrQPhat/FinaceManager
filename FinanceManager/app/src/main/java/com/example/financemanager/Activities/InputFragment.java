@@ -71,8 +71,8 @@ public class InputFragment extends Fragment {
 
         NavigationViewActivity activity = (NavigationViewActivity) getActivity();
         user_Id = activity.getUser_Id();
-        btnIncome = view.findViewById(R.id.btnIncome);
-        btnExpense = view.findViewById(R.id.btnExpense);
+        btnIncome = view.findViewById(R.id.year);
+        btnExpense = view.findViewById(R.id.month);
         tvDate = view.findViewById(R.id.tvDate);
         btnPreviousDay = view.findViewById(R.id.btnPreviousDay);
         btnNextDay = view.findViewById(R.id.btnNextDay);

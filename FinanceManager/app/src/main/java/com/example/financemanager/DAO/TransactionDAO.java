@@ -141,27 +141,40 @@ public class TransactionDAO {
         return transactionList;
     }
 
-    public Map<String, Integer> getMonthlyValuesByType(int userId, String type) {
+    public List<Transaction> getTransactionsByTypeAndYear(int user_Id, String type, String year) {
+        List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Map<String, Integer> data = new LinkedHashMap<>();
-
-        String query = "SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total " +
-                "FROM Transactions JOIN Categories ON Transactions.category_id = Categories.category_id " +
-                "WHERE Transactions.user_id = ? AND Categories.type = ? " +
-                "GROUP BY month " +
-                "ORDER BY month ASC";
-
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), type});
-
-        while (cursor.moveToNext()) {
-            String month = cursor.getString(0);
-            int total = cursor.getInt(1);
-            data.put(month, total);
+        Cursor cursor = null;
+        String query ="SELECT Transactions.transaction_id, Categories.name, Transactions.amount, Transactions.date, "
+                + "Transactions.description, Transactions.category_id, Transactions.user_id, Icon.path, Categories.type "
+                + "FROM Transactions JOIN Categories on Transactions.category_id = Categories.category_id"
+                + " JOIN Icon on Categories.icon_id = Icon.id WHERE Transactions.user_id= ? and Categories.type = ?"
+                + "AND substr(Transactions.date, 7, 4) = ?";
+        try {
+            cursor = db.rawQuery(query, new String[]{String.valueOf(user_Id), type, year}, null);
+            if (cursor.moveToFirst()) {
+                do {
+                    Transaction transaction = new Transaction(
+                            cursor.getInt(0),    //transaction_id
+                            cursor.getString(1), //name
+                            cursor.getInt(2),    //amount
+                            cursor.getString(3), //date
+                            cursor.getString(4), //description
+                            cursor.getInt(5),    //category_id
+                            cursor.getInt(6),    //user_id
+                            cursor.getString(7), //iconPath
+                            cursor.getString(8)  //type
+                    );
+                    transactionList.add(transaction);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+            db.close();
         }
-
-        cursor.close();
-        db.close();
-        return data;
+        return transactionList;
     }
 
 

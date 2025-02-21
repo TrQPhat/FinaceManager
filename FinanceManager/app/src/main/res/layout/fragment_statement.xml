@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/main_bg"
+    android:background="#E2E2E2"
     tools:context=".Activities.HomeFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="260dp"
+        android:layout_height="240dp"
         android:background="@drawable/design_top_home_fragment"
         android:orientation="vertical">
 
@@ -175,7 +175,7 @@
             android:paddingRight="10dp">
 
             <Button
-                android:id="@+id/btnExpense"
+                android:id="@+id/month"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -183,13 +183,13 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:backgroundTint="#E9E6E0"
-                android:text="Chi tiêu"
+                android:text="Hằng tháng"
                 android:textColor="@color/black"
                 android:textSize="17dp"
                 android:textStyle="bold" />
 
             <Button
-                android:id="@+id/btnIncome"
+                android:id="@+id/year"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -197,9 +197,9 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:alpha="0.6"
-                android:textColor="@color/black"
                 android:backgroundTint="#E9E6E0"
-                android:text="Thu nhập"
+                android:text="Hằng năm"
+                android:textColor="@color/black"
                 android:textSize="17dp"
                 android:textStyle="bold" />
 
@@ -207,9 +207,26 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tvYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+
+        android:textStyle="bold"
+        android:layout_gravity="center|end"
+        android:background="@drawable/social_btn_background"
+        android:text="2024" />
+
     <FrameLayout
         android:id="@+id/frame_container"
-        android:layout_margin="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/custom_top_input"
@@ -220,7 +237,7 @@
             android:id="@+id/barChart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp" />
+            android:background="#DFF7E2" />
 
 
 
